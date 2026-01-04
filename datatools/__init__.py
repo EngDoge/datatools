@@ -12,7 +12,7 @@ import configparser
 def get_package_version(work_dir):
     config = configparser.ConfigParser()
 
-    config_path = os.path.join(work_dir, "datatools.cfg")
+    config_path = os.path.join(work_dir, "version.cfg")
     config.read(config_path)
     version_main = config.get("version", "update")
     return version_main
