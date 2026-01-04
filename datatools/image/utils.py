@@ -1,16 +1,19 @@
-from pystunner.stunner import Stunner
 from typing import Union, List, Dict
 import numpy as np
 
 
 def extract_layer(mask: np.ndarray,
                   layer_id: int,
-                  num_threads: int = 1,
-                  height: int = 160,
-                  width: int = 160) -> np.ndarray:
-    layer = np.zeros((height, width), dtype=np.uint8)
-    Stunner.extract_layer(layer=layer, layer_mask=mask, layer_id=layer_id, num_threads=num_threads)
-    return layer
+                #   num_threads: int = 1,
+                #   height: int = 160,
+                #   width: int = 160,
+                  *args, **kwargs
+                  ) -> np.ndarray:
+    
+    return (mask == layer_id).astype(np.uint8)
+    # layer = np.zeros((height, width), dtype=np.uint8)
+    # Stunner.extract_layer(layer=layer, layer_mask=mask, layer_id=layer_id, num_threads=num_threads)
+    # return layer
 
 
 def extract_target_layers(mask: np.ndarray,
@@ -18,12 +21,8 @@ def extract_target_layers(mask: np.ndarray,
                           num_threads: int = 1) -> Dict:
     if isinstance(layers, List):
         layers = {layer: i for i, layer in enumerate(layers)}
-    mask_shape = mask.shape
     return {layer: extract_layer(mask=mask,
-                                 layer_id=idx,
-                                 num_threads=num_threads,
-                                 height=mask_shape[0],
-                                 width=mask_shape[1]) for layer, idx in layers.items()}
+                                 layer_id=idx) for layer, idx in layers.items()}
 
 
 # def color2id(mask: np.ndarray,
