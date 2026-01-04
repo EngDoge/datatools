@@ -4,6 +4,9 @@ import cv2
 import shutil
 import numpy as np
 import os.path as osp
+
+import json
+import yaml
 from PIL import Image
 from hashlib import md5
 from functools import wraps
@@ -575,6 +578,19 @@ class ImageData:
         with open(file, 'r') as file:
             center = tuple(int(coord) for coord in file.read().split('|'))
         return center
+    
+    @property
+    def info(self):
+        ann = self.ann
+        if ann:
+            suffix = ann.split(".")[-1]
+            if suffix in ['json']:
+                with open(ann, 'r') as f:
+                    info = json.load(f)
+                return info
+            else:
+                print(f"Unsuppoorted format: {suffix}")
+        return None
 
     @property
     def name(self) -> str:
@@ -806,7 +822,7 @@ class ImageData:
 
     def __get_attr(self, attr: str) -> Union['SingleImage', str, None]:
         attr = attr.lower()
-        ext = 'png' if attr not in ['ann'] else 'xml'
+        ext = 'png' if attr not in ['ann'] else 'json'
         latent_attr = '_' + attr
         memory = getattr(self, latent_attr)
         if memory is None:
