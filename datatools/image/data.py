@@ -481,7 +481,7 @@ class ImageData:
                  file_path: str,
                  separated: Optional[bool] = None,
                  use_single_image: bool = True,
-                 backend: str = 'cv2',
+                 backend: str = 'pil',
                  require_mask: bool = False,
                  strict_inspection: bool = False,
                  hard_sample: bool = False,
@@ -638,6 +638,16 @@ class ImageData:
     @property
     def is_hard_sample(self) -> bool:
         return self.__hard_sample
+    
+    def update_annotation(self, data: dict):
+        info = self.info or {}
+        info.update(data)
+            
+        ann_file = self.ann
+        if not ann_file:
+            ann_file = self.get_renamed_path(ext='json', suffix='ann')
+        with open(ann_file, 'w') as f:
+            json.dump(info, f, indent=4)
 
     def set_backend(self, backend) -> None:
         assert backend in ['cv2', 'pillow'], f'Backend must be either cv2 or pillow! {backend} is not allowed!'
