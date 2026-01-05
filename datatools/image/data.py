@@ -481,7 +481,7 @@ class ImageData:
                  file_path: str,
                  separated: Optional[bool] = None,
                  use_single_image: bool = True,
-                 backend: str = 'pil',
+                 backend: str = 'pillow',
                  require_mask: bool = False,
                  strict_inspection: bool = False,
                  hard_sample: bool = False,
