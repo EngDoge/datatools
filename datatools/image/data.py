@@ -1,6 +1,7 @@
 import os
 import re
 import cv2
+import base64
 import shutil
 import numpy as np
 import os.path as osp
@@ -170,6 +171,13 @@ class SingleImage:
         with open(self.path, 'rb') as cur:
             hash_calc.update(cur.read())
         return hash_calc.hexdigest()
+    
+        
+    @property
+    def base64(self) -> str:
+        with open(self.path, "rb") as f:
+            _data = base64.b64encode(f.read()).decode("utf-8")
+        return _data
 
     @property
     def has_parent(self) -> bool:
