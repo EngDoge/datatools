@@ -646,6 +646,7 @@ class ImageData:
         ann_file = self.ann
         if not ann_file:
             ann_file = self.get_renamed_path(ext='json', suffix='ann')
+        os.makedirs(os.path.dirname(ann_file), exist_ok=True)
         with open(ann_file, 'w') as f:
             json.dump(info, f, indent=4)
 
