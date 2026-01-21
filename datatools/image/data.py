@@ -5,6 +5,7 @@ import base64
 import shutil
 import numpy as np
 import os.path as osp
+import copy
 
 import json
 import yaml
@@ -641,14 +642,19 @@ class ImageData:
     
     def update_annotation(self, data: dict):
         info = self.info or {}
+        info_copy = copy.deepcopy(info)
         info.update(data)
             
         ann_file = self.ann
         if not ann_file:
             ann_file = self.get_renamed_path(ext='json', suffix='ann')
         os.makedirs(os.path.dirname(ann_file), exist_ok=True)
-        with open(ann_file, 'w') as f:
-            json.dump(info, f, indent=4)
+        try:
+            with open(ann_file, 'w') as f:
+                json.dump(info, f, indent=4)
+        except:
+            with open(ann_file, 'w') as f:
+                json.dump(info_copy, f, indent=4)
 
     def set_backend(self, backend) -> None:
         assert backend in ['cv2', 'pillow'], f'Backend must be either cv2 or pillow! {backend} is not allowed!'
