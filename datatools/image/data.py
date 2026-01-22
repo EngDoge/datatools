@@ -828,7 +828,7 @@ class ImageData:
                          suffix: str) -> str:
         folder = suffix.capitalize().join([os.sep, os.sep])
         cur_folder = 'Cur'.join([os.sep, os.sep])
-        replace_suffix = '.'.join(['_' + suffix, ext]) if suffix not in ['Ann', 'ann'] else '.' + ext
+        replace_suffix = '.'.join(['_' + suffix, ext]) if suffix not in ['Ann', 'ann', 'id', 'Id'] else '.' + ext
         cur = self._cur
         _, cur_ext = osp.splitext(cur)
         renamed = cur.replace(cur_folder, folder).replace(cur_ext, replace_suffix)
